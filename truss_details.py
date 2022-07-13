@@ -1,9 +1,10 @@
+import math
 def truss_det():
     j=int(input('number of coordinates :'))
     coord=[]
     for i in range(j):
         print('coordinate '+str(i+1))
-        coord.append([float(input('x=')),float(input('y='))])
+        coord.append([float(input('x(m)=')),float(input('y(m)='))])
     m=int(input('number of memebers :'))
     mem=[]
     for i in range(m):
@@ -32,6 +33,26 @@ def truss_det():
                 n=0
                 rnx=rnx+1
         support_cood_det.append([coord[int(input('support coordinate no:'))-1], reactions,n,up])#the two 0s will be used for writing reactions
-    return [coord,mem,support_cood_det,rnx]
+    a=input('are all members having same area  (t/f)')
+    area=[]
+    if a=='t':
+        areaval=float(input('in units of mm2 '))
+        for i in range(len(mem)):
+            area.append(areaval)
+    elif a=='f':
+        for i in range(len(mem)):
+            print('for member no {} the area of the member is (units of mm2)'.format(i+1))
+            area.append(float(input()))
+    a=input('are all members having same moduli of elasticity  (t/f) ')
+    E=[]
+    if a=='t':
+        Eval=float(input('in units of Gpa '))
+        for i in range(len(mem)):
+            E.append(Eval)
+    elif a=='f':
+        for i in range(len(mem)):
+            print('for member no {} the E of the member is (units of Gpa ) '.format(i+1))
+            E.append(float(input()))
+    return [coord,mem,support_cood_det,rnx,area,area,E]
 
 

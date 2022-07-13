@@ -98,7 +98,7 @@ def reaction_in_truss(coord,mem,support,loads):
                 o.append(support_soln[k + t + i])
             elif k==1:
                 print('value of Nx= ',end='')
-            print(support_soln[i + k + t])
+            print(support_soln[i + k + t],'(KN)')
         o.reverse()
         load_with_supports.append([support[i][0],o])
         t=t+k
@@ -124,13 +124,14 @@ def reaction_in_truss_wop(coord,mem,support,loads):
                 if support[p][3-k]!=0:
                     q[i].append(support[p][0][k]-o[k])
 
+
     t=i+1
     #Ny and Nx not in order (y 1st and then x)
 
     c1=0
     q.append([])
     for i in range(len(support)):
-        for k in range(support[i][1]):
+        for k in range(2):
 
             if k%2==0 and support[i][3]==1:
                 q[t].append(0)
@@ -176,7 +177,6 @@ def reaction_in_truss_wop(coord,mem,support,loads):
             q[i].append(0)
         else:
             q[i].append(1)
-
     support_soln=linearsoln.linear_solve(q,d)
     load_with_supports=loads
     t=0
@@ -292,7 +292,8 @@ def reaction_in_truss_new1(coord,mem,support,loads):
                 o.append(support_soln[k + t + i])
             elif k==1:
                 print('value of Nx= ',end='')
-            print(support_soln[i + k + t])
+            print(support_soln[i + k + t],end=' ')
+            print('(KN)')
         o.reverse()
         load_with_supports.append([support[i][0],o])
         t=t+k
@@ -328,7 +329,7 @@ def reaction_in_truss_new1_wop(coord,mem,support,loads):
     c1=0
     q.append([])
     for i in range(len(support)):
-        for k in range(support[i][1]):
+        for k in range(2):
 
             if k%2==0 and support[i][3]==1:
                 q[t].append(0)

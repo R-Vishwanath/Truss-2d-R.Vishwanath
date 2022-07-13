@@ -47,7 +47,7 @@ def axial_force(coord,mem,loads_with_support,support_soln):
     n=[]
     for i in range(len(mem)):
         n.append(axial_force_soln[i])
-        print('the axial force in member ' + str(float(i + 1)) + '= ' + str(round(n[i], 2)))
+        print('the axial force in member ' + str(float(i + 1)) + '= ' + str(round(n[i], 2))+' (KN)')
     return n
 
 def axial_force_wop(coord,mem,loads_with_support,support_soln):

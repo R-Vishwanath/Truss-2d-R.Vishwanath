@@ -3,7 +3,7 @@ import linearsoln
 import truss_drawing
 import Displacement_printing_coordinate_changing
 
-def statically_indeterminate(mem,coord,support,loads,l,rxn):
+def statically_indeterminate(mem,coord,support,loads,l,rxn,E,A):
     support_primary=[]
     w=0
 
@@ -39,7 +39,7 @@ def statically_indeterminate(mem,coord,support,loads,l,rxn):
         c11=1
 
 
-    D_primary,n_primary=just_rigid.just_rigid_(mem,coord,support_primary,3,loads,l)
+    D_primary,n_primary=just_rigid.just_rigid_(mem,coord,support_primary,3,loads,l,E,A)
     D_primary_needed=[]
 
     for i in range(len(support)):
@@ -68,34 +68,32 @@ def statically_indeterminate(mem,coord,support,loads,l,rxn):
                 if support[i][1]==1:
                     if support[i][2]==1:
                         load_redundant.append([support[i][0],[1,0]])
-                        D_redundant, n_redundant = just_rigid.just_rigid_(mem, coord, support_primary, 3, load_redundant, l)
+                        D_redundant, n_redundant = just_rigid.just_rigid_(mem, coord, support_primary, 3, load_redundant, l,E,A)
                         n_tot_redundant.append(n_redundant)
                         load_redundant.pop(0)
                     else:
                         load_redundant.append([support[i][0], [0, 1]])
-                        D_redundant, n_redundant = just_rigid.just_rigid_(mem, coord, support_primary, 3, load_redundant, l)
+                        D_redundant, n_redundant = just_rigid.just_rigid_(mem, coord, support_primary, 3, load_redundant, l,E,A)
                         n_tot_redundant.append(n_redundant)
                         load_redundant.pop(0)
                 else:
                     if k==0:
                         load_redundant.append([support[i][0],[1,0]])
-                        D_redundant, n_redundant = just_rigid.just_rigid_(mem, coord, support_primary, 3, load_redundant, l)
+                        D_redundant, n_redundant = just_rigid.just_rigid_(mem, coord, support_primary, 3, load_redundant, l,E,A)
                         n_tot_redundant.append(n_redundant)
                         load_redundant.pop(0)
                     elif k==1:
                         load_redundant.append([support[i][0], [0, 1]])
-                        D_redundant, n_redundant = just_rigid.just_rigid_(mem, coord, support_primary, 3, load_redundant, l)
+                        D_redundant, n_redundant = just_rigid.just_rigid_(mem, coord, support_primary, 3, load_redundant, l,E,A)
                         n_tot_redundant.append(n_redundant)
                         load_redundant.pop(0)
     f=[]
-    E = 2 * pow(10, 5)
-    A = 5 * pow(10, -3)
     for i in range(len(n_tot_redundant)):
         f.append([])
         for j in range(len(n_tot_redundant)):
             sum=0
             for k in range(len(mem)):
-                sum=sum+n_tot_redundant[i][k]*n_tot_redundant[j][k]*l[k]/(E*A)
+                sum=sum+n_tot_redundant[i][k]*n_tot_redundant[j][k]*l[k]/(E[i]*A[i])
             f[i].append(sum)
     support_soln = linearsoln.linear_solve(f, D_primary_needed)
     new_coord=coord
@@ -118,10 +116,11 @@ def statically_indeterminate(mem,coord,support,loads,l,rxn):
                         r1.append(support_soln[u])
                         modified_loads.append([support[i][0],r1])
                 u+=1
+
     if c11!=1:
         for i in range(len(modified_loads)):
             un_updated_loads.append(modified_loads[i])
-        D,n,support_soln=just_rigid.just_rigid_with_p_for_origid(mem,coord,support_primary,3,un_updated_loads,l,modified_loads,og_supp)
+        D,n,support_soln=just_rigid.just_rigid_with_p_for_origid(mem,coord,support_primary,3,un_updated_loads,l,modified_loads,og_supp,E,A)
         new_coord=Displacement_printing_coordinate_changing.new_coordinates(coord,D)
         ki=support_soln[len(support_soln)-1][0]
     #support_soln[len(support_soln)-2][1][1]=support_soln[len(support_soln)-1][1][0]
@@ -129,7 +128,7 @@ def statically_indeterminate(mem,coord,support,loads,l,rxn):
     else:
         for i in range(len(modified_loads)):
             un_updated_loads.append(modified_loads[i])
-        D,n,support_soln=just_rigid.just_rigid_without_p_for_origid(mem,coord,support_primary,3,un_updated_loads,l,modified_loads,og_supp)
+        D,n,support_soln=just_rigid.just_rigid_without_p_for_origid(mem,coord,support_primary,3,un_updated_loads,l,modified_loads,og_supp,E,A)
         new_coord=Displacement_printing_coordinate_changing.new_coordinates(coord,D)
         ki=support_soln[len(support_soln)-1][0]
     for i in range(len(modified_loads)):

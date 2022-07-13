@@ -5,7 +5,7 @@ def loadetails(coord):
     for i in range(n):
         print('For load no ' + str(i + 1))
         p=int(input('coordinate number'))
-        q=float(input('magnitude of force in x direction'))
-        r=float(input('magnitude of force in y direction'))
+        q=float(input('magnitude of force in x direction (KN)'))
+        r=float(input('magnitude of force in y direction (KN)'))
         loads.append([coord[p-1],[q,r]])
     return loads

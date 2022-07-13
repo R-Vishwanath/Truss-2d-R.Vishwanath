@@ -16,6 +16,7 @@ def truss_drawing(coord,new_coord,mem,support,load_details):
         tr.pendown()
         p2 = coord[mem[i][1] - 1]
         tr.goto(sf*p2[0],sf* p2[1])
+    print(support)
     for i in range(len(support)):
         if support[i][1]==2:
             tr.pencolor('black')

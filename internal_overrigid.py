@@ -1,11 +1,11 @@
 import just_rigid
 import linearsoln
-def statically_indeterminate(mem,coord,support,load,l):
+def statically_indeterminate(mem,coord,support,load,l,E,A):
     ns=len(mem)+3-2*len(coord)
     mem_new=[]
     for i in range(len(mem)-ns):
         mem_new.append(mem[i])
-    D_pri,n_pri=just_rigid.just_rigid_(mem_new,coord,support,3,load,l)
+    D_pri,n_pri=just_rigid.just_rigid_(mem_new,coord,support,3,load,l,E,A)
 
     q=[]
     n_mat=[]
@@ -18,7 +18,7 @@ def statically_indeterminate(mem,coord,support,load,l):
         y2 = coord[q[i][1] - 1][1]
         li=pow((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2),0.5)
         load_new=[[[x1,y1],[(x1-x2)/li,(y1-y2)/li]],[[x2,y2],[(x2-x1)/li,(y2-y1)/li]]]
-        D_i,n_i=just_rigid.just_rigid_(mem_new,coord,support,3,load,l)
+        D_i,n_i=just_rigid.just_rigid_(mem_new,coord,support,3,load,l,E,A)
         n_mat.append(n_i)
         x1=D_pri[q[i][0]-1][0]
         y1 = D_pri[q[i][0] - 1][1]
@@ -56,12 +56,12 @@ def statically_indeterminate(mem,coord,support,load,l):
         print('the axial force in member ' + str(float(i + 1)) + '= ' + str(round(n_pri[i], 2)))
     return n_pri
 
-def statically_indeterminate_wop(mem,coord,support,load,l):
+def statically_indeterminate_wop(mem,coord,support,load,l,E,A):
     ns=len(mem)+3-2*len(coord)
     mem_new=[]
     for i in range(len(mem)-ns):
         mem_new.append(mem[i])
-    D_pri,n_pri=just_rigid.just_rigid_(mem_new,coord,support,3,load,l)
+    D_pri,n_pri=just_rigid.just_rigid_(mem_new,coord,support,3,load,l,E,A)
     q=[]
     n_mat=[]
     D_needed=[]
@@ -73,7 +73,7 @@ def statically_indeterminate_wop(mem,coord,support,load,l):
         y2 = coord[q[i][1] - 1][1]
         li=pow((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2),0.5)
         load_new=[[[x1,y1],[(x1-x2)/li,(y1-y2)/li]],[[x2,y2],[(x2-x1)/li,(y2-y1)/li]]]
-        D_i,n_i=just_rigid.just_rigid_(mem_new,coord,support,3,load,l)
+        D_i,n_i=just_rigid.just_rigid_(mem_new,coord,support,3,load,l,E,A)
         n_mat.append(n_i)
         x1=D_pri[q[i][0]-1][0]
         y1 = D_pri[q[i][0] - 1][1]
