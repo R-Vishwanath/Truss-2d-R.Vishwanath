@@ -2,7 +2,7 @@
 Analysis of 2d trusses
 Can be used to solve for 2d trusses's axial force, support reactions, displacement ,
 new coordinates for either just rigid or internally or externally over rigid structure with descriptive drawing showing initial and final positions
-And option to change engineering parameters like E(Modulus of Elasticty) or A(area of Truss members) for invidual members
+And option to change engineering parameters like E(Modulus of Elasticity) or A(area of Truss members) for individual members
 
 The method of entering data is 
 No of coordinates or nodes:-
